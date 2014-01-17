@@ -3,24 +3,24 @@ class LowPassFilter3
 
 public:
 
-	LowPassFilter3()
-	{
-	  y1=y2=y3=y4=oldx=oldy1=oldy2=oldy3=0;
-	}
+  LowPassFilter3()
+  {
+    y1=y2=y3=y4=oldx=oldy1=oldy2=oldy3=0;
+  }
 
-	void updateParam(long cutoff, long resonance)
-	{
+  void updateParam(long cutoff, long resonance)
+  {
       p = (cutoff*(460 - ((205*cutoff)>>8)))>>8;
       k = (p<<1) - 256;
 
       int t = ((256 - p)*355)>>8;
       int t2 = 3072 + ((t*t)>>8);
       r = resonance * (t2 + 6*t) / (t2 - 6*t);
-	}
+  }
 
-	inline
-	long generate_audio(long in)
-	{
+  inline
+  long generate_audio(long in)
+  {
       x = input - ((r*y4)>>8);
 
 //Four cascaded onepole filters (bilinear transform)
@@ -37,11 +37,11 @@ public:
 
      oldx = x; oldy1 = y1; oldy2 = y2; oldy3 = y3;
      return y4;
-	}
+  }
 
 
 private:
-	int y1,y2,y3,y4;
+    int y1,y2,y3,y4;
     int oldx;
     int oldy1,oldy2,oldy3;
     int x, r, p, k;
